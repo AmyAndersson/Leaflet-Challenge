@@ -82,4 +82,25 @@ d3.json(EQdata, (earthquakesdata) => {
 
     var EQLayer = L.layerGroup(earthquake_list); 
     EQLayer.addTo(myMap);
+
+    var legend = L.control({ position: "bottomright" });
+    legend.onAdd = function (myMap) {
+      var div = L.DomUtil.create("div", "info legend");
+      div.innerHTML += "<h4>Earthquake Depth</h4>";
+      div.innerHTML +=
+        '<i style="background: #99FF33"></i><span> -10 to 10</span><br>';
+      div.innerHTML +=
+        '<i style="background: #CCFF66"></i><span>10 to 30</span><br>';
+      div.innerHTML +=
+        '<i style="background: #FFCC33"></i><span>30 to 50</span><br>';
+      div.innerHTML +=
+        '<i style="background: #FF9900"></i><span>50 to 70</span><br>';
+      div.innerHTML +=
+        '<i style="background: #FF6600"></i><span>70 to 90</span><br>';
+      div.innerHTML += '<i style="background: #FF0000"></i><span>90 +</span><br>';
+  
+      return div;
+    };
+  
+    legend.addTo(myMap);
   });
