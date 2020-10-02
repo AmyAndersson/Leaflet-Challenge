@@ -55,4 +55,9 @@ The following visualisations were created:
 I chose to centre my map over Australia, where I live. However, more frequent, shallower and smaller magnitude earthquakes are seen along the San Andres Faults on the West Coast of the United states. Here is an example of this data over that part of the world: 
 
 
-![IMG1](Images/SOLUTION1_VIEW2.PNG)
+![IMG2](Images/SOLUTION1_VIEW2.PNG)
+
+
+BONUS: Step 2: 
+
+![IMG3](Images/SOLUTION2.PNG)
