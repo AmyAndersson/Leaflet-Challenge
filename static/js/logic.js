@@ -28,20 +28,19 @@ var EQdata = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week
 function Colourfun(depth) {
   switch (true) {
     case depth > 20:
-      return "#ea2c2c";
+      return "#FF0000";
     case depth > 15:
-      return "#ea822c";
+      return "#FF8500";
     case depth > 10:
-      return "#ee9c00";
+      return "#FFD700";
     case depth > 5:
-      return "#eecc00";
-    case depth > 1:
-      return "#d4ee00";
+      return "#FFFF00";
+    case depth < 1:
+      return "#9ACD32";
     default:
-      return "#98ee00";
+      return "#008000";
   }; 
 };
-
 
 
 
@@ -84,23 +83,23 @@ d3.json(EQdata, (earthquakesdata) => {
     EQLayer.addTo(myMap);
 
     var legend = L.control({ position: "bottomright" });
+
     legend.onAdd = function (myMap) {
       var div = L.DomUtil.create("div", "info legend");
       div.innerHTML += "<h4>Earthquake Depth</h4>";
       div.innerHTML +=
-        '<i style="background: #99FF33"></i><span> -10 to 10</span><br>';
+        '<i style="background: #FF0000"></i><span> 15-20</span><br>';
       div.innerHTML +=
-        '<i style="background: #CCFF66"></i><span>10 to 30</span><br>';
+        '<i style="background: #FF8500"></i><span>10-15</span><br>';
       div.innerHTML +=
-        '<i style="background: #FFCC33"></i><span>30 to 50</span><br>';
+        '<i style="background: #FFD700"></i><span> 5-10 </span><br>';
       div.innerHTML +=
-        '<i style="background: #FF9900"></i><span>50 to 70</span><br>';
+        '<i style="background: #FFFF00"></i><span> 1-5 </span><br>';
       div.innerHTML +=
-        '<i style="background: #FF6600"></i><span>70 to 90</span><br>';
-      div.innerHTML += '<i style="background: #FF0000"></i><span>90 +</span><br>';
+        '<i style="background: #9ACD32"></i><span> less than 1</span><br>';
   
       return div;
     };
-  
+
     legend.addTo(myMap);
   });

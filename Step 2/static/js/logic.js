@@ -1,15 +1,12 @@
-var AusCoords = [-25.2744, 133.775];
-var mapZoomLevel = 3;
 
 // Create the createMap function
-var myMap = L.map("map-id", {
-  center: AusCoords,
-  zoom: mapZoomLevel,
-  layers: satellite
-});
+// var myMap = L.map("map-id", {
+//   center: AusCoords,
+//   zoom: mapZoomLevel,
+// });
 
 // Create the tile layer that will be the background of our map
-var satellite = L.tileLayer(
+L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
     {
       attribution:
@@ -20,26 +17,26 @@ var satellite = L.tileLayer(
       id: "mapbox/satellite-v9",
       accessToken: API_KEY,
     }
-  ).addTo(myMap);
+  );
 
   // Load in geojson data
 var EQdata = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-// new function to retreive a colour from the depth - for marker
+
 function Colourfun(depth) {
   switch (true) {
     case depth > 20:
-      return "#ea2c2c";
+      return "#FF0000";
     case depth > 15:
-      return "#ea822c";
+      return "#FF8500";
     case depth > 10:
-      return "#ee9c00";
+      return "#FFD700";
     case depth > 5:
-      return "#eecc00";
-    case depth > 1:
-      return "#d4ee00";
+      return "#FFFF00";
+    case depth < 1:
+      return "#9ACD32";
     default:
-      return "#98ee00";
+      return "#008000";
   }; 
 };
 
@@ -81,42 +78,67 @@ d3.json(EQdata, (earthquakesdata) => {
  
 
     var EQLayer = L.layerGroup(earthquake_list); 
-    EQLayer.addTo(myMap);
+    // EQLayer.addTo(myMap);
 
+    var legend = L.control({ position: "bottomright" });
 
+    legend.onAdd = function (myMap) {
+      var div = L.DomUtil.create("div", "info legend");
+      div.innerHTML += "<h4>Earthquake Depth</h4>";
+      div.innerHTML +=
+        '<i style="background: #FF0000"></i><span> 15-20</span><br>';
+      div.innerHTML +=
+        '<i style="background: #FF8500"></i><span>10-15</span><br>';
+      div.innerHTML +=
+        '<i style="background: #FFD700"></i><span> 5-10 </span><br>';
+      div.innerHTML +=
+        '<i style="background: #FFFF00"></i><span> 1-5 </span><br>';
+      div.innerHTML +=
+        '<i style="background: #9ACD32"></i><span> less than 1</span><br>';
+  
+      return div;
+    };
 
-var myMap = L.map("map-id", {
-  center: AusCoords,
-  zoom: mapZoomLevel,
-  layers: satellite
+   
+
+// Define variables for our tile layers
+var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "light-v10",
+  accessToken: API_KEY
 });
 
+var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "dark-v10",
+  accessToken: API_KEY
+});
 
-// // Pass our map layers into our layer control
-// // Add the layer control to the map
-// L.control.layers(baseMaps, overlayMaps, {
-//   collapsed: false
-// }).addTo(myMap);
-
-
-var legend = L.control({ position: "bottomright" });
-legend.onAdd = function (leg) {
-  var div = L.DomUtil.create("div", "info legend");
-  div.innerHTML += "<h4>Earthquake Depth</h4>";
-  div.innerHTML +=
-    '<i style="background: #99FF33"></i><span> -10 to 10</span><br>';
-  div.innerHTML +=
-    '<i style="background: #CCFF66"></i><span>10 to 30</span><br>';
-  div.innerHTML +=
-    '<i style="background: #FFCC33"></i><span>30 to 50</span><br>';
-  div.innerHTML +=
-    '<i style="background: #FF9900"></i><span>50 to 70</span><br>';
-  div.innerHTML +=
-    '<i style="background: #FF6600"></i><span>70 to 90</span><br>';
-  div.innerHTML += '<i style="background: #FF0000"></i><span>90 +</span><br>';
-
-  return div;
+// Only one base layer can be shown at a time
+var baseMaps = {
+  Light: light,
+  Dark: dark
 };
 
-legend.addTo(myMap);
+// Overlays that may be toggled on or off
+var overlayMaps = {
+  Earthquake_layer: EQLayer
+};
+
+// Create map object and set default layers
+var myMap = L.map("map-id", {
+  center: [-25.2744, 133.775],
+  zoom: 3,
+  layers: [light, EQLayer]
 });
+
+// Pass our map layers into our layer control
+// Add the layer control to the map
+L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+
+legend.addTo(myMap);
+
+
+  });
