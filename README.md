@@ -50,15 +50,15 @@ Your first task is to visualize an earthquake data set.
   
 The following visualisations were created: 
 
-![IMG1](Images/SOLUTION1.PNG)
+![IMG1](Images/SOLUTION1.PNG)<br>
 
 I chose to centre my map over Australia, where I live. However, more frequent, shallower and smaller magnitude earthquakes are seen along the San Andres Faults on the West Coast of the United states. Here is an example of this data over that part of the world: 
 
-<br>
 
-![IMG2](Images/SOLUTION1_View2.PNG)
 
-<br>
+![IMG2](Images/SOLUTION1_view2.PNG)<br>
+
+
 
 
 BONUS: Step 2: 
